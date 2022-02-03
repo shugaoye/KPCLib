@@ -239,7 +239,9 @@ namespace PassXYZLib
 			set 
 			{ 
 				m_DefaultFolder = value;
+#if PassXYZ_215
 				PassXYZ.Utils.Settings.DefaultFolder = m_DefaultFolder;
+#endif
 			}
 		}
 
@@ -277,6 +279,7 @@ namespace PassXYZLib
 			CompositeKey cmpKey = new CompositeKey();
 			cmpKey.AddUserKey(new KcpPassword(password));
 
+#if PassXYZ_215
 			if(PxDefs.IsDeviceLockEnabled(filename))
 			{
 				var userName = PxDefs.GetUserNameFromDataFile(filename);
@@ -292,7 +295,7 @@ namespace PassXYZLib
 					throw new KeePassLib.Keys.InvalidCompositeKeyException();
 				}
 			}
-
+#endif
 			Open(ioc, cmpKey, logger);
 		}
 
@@ -314,6 +317,7 @@ namespace PassXYZLib
 			CompositeKey cmpKey = new CompositeKey();
 			cmpKey.AddUserKey(new KcpPassword(user.Password));
 
+#if PassXYZ_215
 			if (user.IsDeviceLockEnabled)
 			{
 				try 
@@ -340,12 +344,13 @@ namespace PassXYZLib
 					}
 				}
 			}
-
+#endif
 			Open(ioc, cmpKey, logger);
 		}
 
 		public string GetDeviceLockData(PassXYZLib.User user)
         {
+#if PassXYZ_215
 			if (user.IsDeviceLockEnabled)
 			{
 				try
@@ -363,6 +368,7 @@ namespace PassXYZLib
 					return string.Empty;
 				}
 			}
+#endif
 			return string.Empty;
 		}
 
@@ -378,6 +384,7 @@ namespace PassXYZLib
 
 			cmpKey.AddUserKey(new KcpPassword(newPassword));
 
+#if PassXYZ_215
 			if (user.IsDeviceLockEnabled)
 			{
 				try
@@ -405,6 +412,7 @@ namespace PassXYZLib
 					}
 				}
 			}
+#endif
 			MasterKey = cmpKey;
 			MasterKeyChanged = DateTime.UtcNow;
 
@@ -420,6 +428,10 @@ namespace PassXYZLib
 		{
 			if (user == null) { Debug.Assert(false); throw new ArgumentNullException("PassXYZLib.User"); }
 
+			IOConnectionInfo ioc = IOConnectionInfo.FromPath(user.Path);
+			CompositeKey cmpKey = new CompositeKey();
+			cmpKey.AddUserKey(new KcpPassword(user.Password));
+#if PassXYZ_215
 			if (user.IsDeviceLockEnabled)
 			{
 				if(!CreateKeyFile(user))
@@ -427,10 +439,6 @@ namespace PassXYZLib
 					throw new KeePassLib.Keys.InvalidCompositeKeyException();
 				}
 			}
-
-			IOConnectionInfo ioc = IOConnectionInfo.FromPath(user.Path);
-			CompositeKey cmpKey = new CompositeKey();
-			cmpKey.AddUserKey(new KcpPassword(user.Password));
 
 			if (user.IsDeviceLockEnabled)
 			{
@@ -447,6 +455,7 @@ namespace PassXYZLib
 					throw new KeePassLib.Keys.InvalidCompositeKeyException();
 				}
 			}
+#endif
 			New(ioc, cmpKey);
 
 			// Set the database name to the current user name
@@ -456,6 +465,7 @@ namespace PassXYZLib
 			RootGroup.Name = user.Username;
 		}
 
+#if PassXYZ_215
 		/// <summary>
 		/// Create a key file from an PxKeyProvider instance or from the system
 		/// </summary>
@@ -509,7 +519,7 @@ namespace PassXYZLib
 
 			return false;
 		}
-
+#endif
 		private void EnsureRecycleBin(ref PwGroup pgRecycleBin)
 		{
 			if (pgRecycleBin == this.RootGroup)

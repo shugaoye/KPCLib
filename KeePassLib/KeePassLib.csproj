@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RuntimeIdentifier>wasi-wasm</RuntimeIdentifier>
     <ApplicationIcon />
     <OutputType>Library</OutputType>
     <StartupObject />
@@ -28,8 +29,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SkiaSharp" Version="2.88.6" />
-    <PackageReference Include="Svg.Skia" Version="1.0.0.9" />
+    <PackageReference Include="SkiaSharp" Version="2.88.9" />
+    <PackageReference Include="Svg.Skia" Version="2.0.0.2" />
+    <PackageReference Include="Wasi.Sdk" Version="0.1.1" />
   </ItemGroup>
 
   <ItemGroup>
